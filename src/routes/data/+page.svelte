@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '#lib/components/Icon.svelte';
 	import SiteHeader from '#lib/components/SiteHeader.svelte';
+	import { VERSION } from '#lib/version.js';
 	import { listEntries, clearEntries } from '#lib/db.js';
 	import { exportBackup, importBackup, download, canUseFolders, saveToFolder } from '#lib/files.js';
 
@@ -112,7 +113,7 @@
 	{#if err}<p class="err" role="alert">{err}</p>{/if}
 
 	<button class="btn danger clear" type="button" onclick={doClear} disabled={count === 0}>Delete all pages</button>
-	<p class="foot muted">Movie Log .film · v0.1.0 · open source (MIT)</p>
+	<p class="foot muted">Movie Log .film · v{VERSION} · open source (MIT)</p>
 </main>
 
 <style>

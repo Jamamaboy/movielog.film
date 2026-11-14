@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
+	import { VERSION } from '#lib/version.js';
 
 	// "☰ MENU / SECTION" header from the brand CI, with a full-screen menu.
 	let { section, dark = false, right }: { section: string; dark?: boolean; right?: Snippet } = $props();
@@ -56,7 +57,7 @@
 		<footer>
 			<img src="/brand/logo.png" alt="Movie Log .film" width="164" height="125" />
 			<p class="mono">
-				v0.1.0 · saved on this device<br />
+				v{VERSION} · saved on this device<br />
 				<a href="https://github.com/Jamamaboy/movielog.film" target="_blank" rel="noreferrer">Open source on GitHub ↗</a>
 			</p>
 		</footer>
