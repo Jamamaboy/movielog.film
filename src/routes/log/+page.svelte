@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '#lib/components/Icon.svelte';
+	import SiteHeader from '#lib/components/SiteHeader.svelte';
 	import { listEntries, deleteEntry, getMeta, setMeta, formatDate, type Entry } from '#lib/db.js';
 	import { shareImage, download, fileName } from '#lib/files.js';
 
@@ -108,11 +109,11 @@
 <svelte:head><title>My Log · Movie Log .film</title></svelte:head>
 
 <main class="screen log">
-	<header class="topbar">
-		<a class="icon-btn" href="/" aria-label="Back"><Icon name="back" /></a>
-		<h1>My Log</h1>
-		<a class="icon-btn" href="/add" aria-label="Add"><Icon name="plus" /></a>
-	</header>
+	<SiteHeader section="My Log">
+		{#snippet right()}
+			<a class="icon-btn" href="/add" aria-label="Add a page"><Icon name="plus" /></a>
+		{/snippet}
+	</SiteHeader>
 
 	<div class="seg" role="group" aria-label="View">
 		<button type="button" aria-pressed={view === 'book'} onclick={() => (view = 'book')}>Book</button>

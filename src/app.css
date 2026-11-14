@@ -1,16 +1,18 @@
 :root {
-	--bg: #f2f2f0;
-	--paper: #fbfbf8;
+	/* Brand CI: A24-shop-like gray page, black type, logo yellow as the accent */
+	--bg: #f0f0ee;
+	--paper: #fafaf8;
 	--surface: #ffffff;
-	--ink: #111111;
-	--muted: #5f5f5a;
-	--line: #d6d6d0;
+	--ink: #0a0a0a;
+	--muted: #6b6b65;
+	--line: #d4d4cf;
 	--yellow: #e8b94a;
 	--yellow-dark: #7a5c0a;
 	--danger: #b42318;
 	--radius: 16px;
 	--font: Inter, 'IBM Plex Sans Thai', system-ui, -apple-system, sans-serif;
-	--mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--display: 'Inter Tight', Inter, 'IBM Plex Sans Thai', system-ui, sans-serif;
+	--mono: 'DM Mono', 'IBM Plex Mono', ui-monospace, monospace;
 	color-scheme: light;
 }
 
@@ -70,8 +72,10 @@ button:disabled {
 
 .topbar h1 {
 	margin: 0;
-	font-size: 16px;
-	font-weight: 700;
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
 }
 
 .icon-btn {

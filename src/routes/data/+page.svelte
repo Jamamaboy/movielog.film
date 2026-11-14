@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '#lib/components/Icon.svelte';
+	import SiteHeader from '#lib/components/SiteHeader.svelte';
 	import { listEntries, clearEntries } from '#lib/db.js';
 	import { exportBackup, importBackup, download, canUseFolders, saveToFolder } from '#lib/files.js';
 
@@ -66,11 +67,7 @@
 <svelte:head><title>Your data · Movie Log .film</title></svelte:head>
 
 <main class="screen data">
-	<header class="topbar">
-		<a class="icon-btn" href="/" aria-label="Back"><Icon name="back" /></a>
-		<h1>Your data</h1>
-		<span style="width: 44px"></span>
-	</header>
+	<div class="full"><SiteHeader section="Your data" /></div>
 
 	<div class="note">
 		<Icon name="lock" />
@@ -127,8 +124,8 @@
 		padding-right: 16px;
 		padding-bottom: max(24px, env(safe-area-inset-bottom));
 	}
-	.topbar {
-		margin: 0 -8px;
+	.full {
+		margin: 0 -16px;
 	}
 	.note {
 		margin-top: 4px;

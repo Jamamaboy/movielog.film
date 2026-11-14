@@ -1,179 +1,154 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '#lib/components/Icon.svelte';
+	import SiteHeader from '#lib/components/SiteHeader.svelte';
 	import { listEntries, formatDate } from '#lib/db.js';
 
 	let count = $state<number | null>(null);
 	let last = $state<number | null>(null);
+	let cover = $state<string | null>(null);
 
-	onMount(async () => {
-		try {
-			const all = await listEntries();
-			count = all.length;
-			last = all.length ? all[all.length - 1].createdAt : null;
-		} catch {
-			count = 0;
-		}
+	onMount(() => {
+		let url: string | null = null;
+		listEntries()
+			.then((all) => {
+				count = all.length;
+				const newest = all[all.length - 1];
+				last = newest?.createdAt ?? null;
+				if (newest) cover = url = URL.createObjectURL(newest.image);
+			})
+			.catch(() => (count = 0));
+		return () => {
+			if (url) URL.revokeObjectURL(url);
+		};
 	});
 </script>
 
 <main class="screen home">
-	<header class="bar">
-		<div class="brand">
-			<Icon name="ticket" size={26} stroke={1.8} />
-			<span>Movie Log<span class="film">.film</span></span>
-		</div>
-		<a class="icon-btn" href="/data" aria-label="Your data"><Icon name="folder" /></a>
-	</header>
+	<SiteHeader section="Home" />
 
-	<section class="hero">
-		<h1>Movie<br />Log</h1>
-		<p class="muted">Turn the pages of your movie log into Stories.</p>
-	</section>
+	<!-- the "product shot": your latest page, or the logo before you have one -->
+	<a class="stage" href={cover ? '/log' : '/add'} aria-label={cover ? 'Open My Log' : 'Add your first page'}>
+		{#if cover}
+			<img class="latest" src={cover} alt="Your latest page" />
+		{:else}
+			<img class="logo" src="/brand/logo.png" alt="Movie Log .film" width="656" height="502" />
+		{/if}
+	</a>
 
-	<nav class="menu" aria-label="Main">
-		<a class="card add" href="/add">
-			<span class="circle"><Icon name="plus" color="#fff" stroke={2.4} /></span>
-			<span class="label">
-				<strong>Add</strong>
-				<span>Capture a page from your log</span>
-			</span>
-		</a>
-		<a class="card log" href="/log">
-			<span class="square"><Icon name="book" stroke={1.8} /></span>
-			<span class="label">
-				<strong>My Log</strong>
-				<span class="muted">
-					{#if count === null}…{:else if count === 0}No pages yet{:else}{count} page{count === 1 ? '' : 's'} · last added {formatDate(last!)}{/if}
-				</span>
-			</span>
-			<Icon name="next" size={20} />
-		</a>
+	<h1>Movie Log</h1>
+
+	<div class="meta">
+		<span class="count">{count ?? '–'}</span>
+		<span class="mono muted">
+			{#if count === null}&nbsp;{:else if count === 0}no pages yet{:else}page{count === 1 ? '' : 's'} · {formatDate(last!)}{/if}
+		</span>
+		<span class="rule" aria-hidden="true"></span>
+		<span class="note muted">
+			Saved on this device<br />
+			<a href="/data">Your data</a> →
+		</span>
+	</div>
+
+	<nav class="actions" aria-label="Start">
+		<a class="btn primary" href="/add"><Icon name="plus" size={18} color="#fff" stroke={2.4} /> Add a page</a>
+		<a class="btn" href="/log">My Log →</a>
 	</nav>
-
-	<p class="foot muted"><Icon name="lock" size={14} /> Saved on this device · no account</p>
 </main>
 
 <style>
 	.home {
-		max-width: 520px;
+		width: 100%;
+		max-width: 1200px;
 		margin: 0 auto;
-		padding-left: 20px;
-		padding-right: 20px;
-		padding-bottom: max(24px, env(safe-area-inset-bottom));
+		padding-bottom: max(20px, env(safe-area-inset-bottom));
 	}
-	.bar {
-		height: 56px;
+	.stage {
+		position: relative;
+		flex: 1;
+		min-height: 180px;
+		margin: 8px 20px 0;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		margin-right: -10px;
+		justify-content: center;
 	}
-	.brand {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-weight: 700;
-		font-size: 17px;
-		letter-spacing: -0.3px;
+	.latest {
+		/* fills the free height, centred, like the product shot on the reference page */
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		height: 100%;
+		max-height: 520px;
+		aspect-ratio: 9 / 16;
+		object-fit: cover;
+		border-radius: 6px;
+		box-shadow: 0 14px 40px rgba(0, 0, 0, 0.16);
 	}
-	.film {
-		color: var(--yellow-dark);
+	.logo {
+		width: min(62%, 340px);
+		height: auto;
 	}
-	.hero {
-		margin-top: clamp(12px, 4vh, 72px);
-	}
-	.hero h1 {
-		margin: 0;
-		font-size: clamp(56px, 17vw, 104px);
-		line-height: 0.92;
-		font-weight: 800;
-		letter-spacing: -0.045em;
-	}
-	.hero p {
+	h1 {
 		margin: 16px 0 0;
-		font-size: 16px;
-		line-height: 24px;
-		max-width: 300px;
+		padding: 0 16px;
+		font-family: var(--display);
+		font-size: clamp(64px, 20vw, 168px);
+		font-weight: 700;
+		line-height: 0.9;
+		letter-spacing: -0.05em;
+		word-spacing: 0.08em;
+		white-space: nowrap;
 	}
-	.menu {
-		margin-top: auto;
-		padding-top: 24px;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-	.card {
-		border-radius: 20px;
-		padding: 20px;
-		display: flex;
-		transition: transform 0.15s ease;
-	}
-	.card:active {
-		transform: scale(0.98);
-	}
-	.add {
-		height: 160px;
-		background: var(--yellow);
-		flex-direction: column;
-		justify-content: space-between;
-	}
-	.add .circle {
-		width: 48px;
-		height: 48px;
-		border-radius: 24px;
-		background: var(--ink);
+	.meta {
+		margin: 14px 20px 0;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		gap: 14px;
+		min-height: 44px;
 	}
-	.add strong {
-		font-size: 34px;
-		font-weight: 800;
-		letter-spacing: -1px;
+	.count {
+		font-family: var(--display);
+		font-size: 40px;
+		font-weight: 500;
+		letter-spacing: -0.03em;
 		line-height: 1;
 	}
-	.add .label span {
-		font-size: 14px;
-		color: #2b2410;
+	.meta .mono {
+		font-size: 15px;
 	}
-	.label {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		flex-grow: 1;
+	.rule {
+		width: 1px;
+		align-self: stretch;
+		background: var(--line);
+		margin-left: auto;
 	}
-	.log {
-		height: 112px;
-		background: var(--surface);
-		border: 1px solid var(--line);
-		align-items: center;
-		gap: 16px;
+	@media (min-width: 700px) {
+		.rule {
+			margin-left: 12px;
+		}
 	}
-	.log .square {
-		width: 48px;
-		height: 48px;
-		border-radius: 12px;
-		background: var(--bg);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.log strong {
-		font-size: 24px;
-		font-weight: 800;
-		letter-spacing: -0.6px;
-		line-height: 1;
-	}
-	.log .label span {
-		font-size: 14px;
-	}
-	.foot {
-		margin: 20px 0 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
+	.note {
 		font-size: 13px;
+		line-height: 17px;
+	}
+	.note a {
+		color: var(--muted);
+		text-decoration: underline;
+	}
+	.actions {
+		margin: 18px 20px 0;
+		display: grid;
+		grid-template-columns: 1.3fr 1fr;
+		gap: 10px;
+	}
+	.actions .btn {
+		height: 54px;
+		border-radius: 27px;
+	}
+	@media (min-width: 900px) {
+		.actions {
+			max-width: 520px;
+		}
 	}
 </style>

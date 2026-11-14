@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from '#lib/assets/favicon.svg';
 	import '../app.css';
 	import type { LayoutProps } from './$types';
 
@@ -7,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" type="image/png" href="/favicon.png" />
 	<title>Movie Log .film</title>
 </svelte:head>
 
