@@ -1,5 +1,11 @@
 <p align="center">
-  <img src="docs/images/logo.png" alt="Movie Log .film" width="280" />
+  <img src="docs/images/logo.png" alt="Movie Log .film" width="300" />
+</p>
+
+<p align="center">
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.1.0-E8B94A" alt="Version 0.1.0" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0A0A0A" alt="MIT license" /></a>
+  <img src="https://img.shields.io/badge/SvelteKit-3-0A0A0A" alt="SvelteKit 3" />
 </p>
 
 <p align="center">
@@ -8,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/screens.png" alt="Home, menu, editor and My Log on a phone" width="100%" />
+  <img src="docs/images/screens.png" alt="Home, editor, Share and keep, and My Log on a phone, made with a page about the film HOPE" width="100%" />
 </p>
 
 ---
@@ -30,6 +36,20 @@ It works like [Excalidraw](https://excalidraw.com/): open the site and start, wi
 3. **Choose a layout**: four Story layouts that size themselves to your review.
 4. **Style and photos**: pick a card style and text colour, add your own photos, move and zoom them.
 5. **Share and keep**: get a 1080 × 1920 PNG to share or download. It also flies into **My Log**.
+
+## Example
+
+<table>
+  <tr>
+    <td width="300"><img src="docs/images/example-hope.jpg" alt="A finished Story: the HOPE poster above a handwritten review on a white card, on yellow" width="280" /></td>
+    <td>
+      A page about <b>HOPE</b> (Na Hong-jin), made with:<br /><br />
+      Layout <b>#2 Photo on top</b><br />
+      Card style <b>Paper</b> with <b>red</b> text<br />
+      Output: <code>1080 × 1920</code> PNG, ready for an Instagram Story
+    </td>
+  </tr>
+</table>
 
 ## Card styles
 
@@ -94,12 +114,22 @@ src/lib/files.ts       share, download, backup, save to folder
 src/routes/            Home, Add, My Log, Your data
 ```
 
-## Roadmap
+## Versions
 
-- [ ] Stickers on the Story
-- [ ] Two-way sync with a local folder
-- [ ] Better box detection for tricky photos (OpenCV.js)
-- [ ] Hosted version on Vercel
+Versions follow [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`). Every change is listed in [CHANGELOG.md](CHANGELOG.md).
+
+| Version | Date | Status | Highlights |
+|---|---|---|---|
+| **0.1.0** | 2026-11-14 | Current | First playable web app: capture, detect, ink only, 4 layouts, 6 card styles, My Log, backup, brand |
+| 0.2.0 | – | Planned | Stickers on the Story |
+| 0.3.0 | – | Planned | Two-way sync with a local folder, better detection for tricky photos (OpenCV.js) |
+| 1.0.0 | – | Planned | Hosted version on Vercel, stable `.movielog` file format |
+
+### Releasing a new version
+
+1. Move the items under **Unreleased** in `CHANGELOG.md` to a new version heading with today's date.
+2. Update `version` in `package.json` (the app reads its version from there).
+3. Commit, then tag it: `git tag -a v0.2.0 -m "v0.2.0"` and `git push origin main --tags`.
 
 ## License
 
